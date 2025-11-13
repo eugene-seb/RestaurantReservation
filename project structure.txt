@@ -1,0 +1,5 @@
+RestaurantReservation/
+├── RestaurantReservation.API/          # Presentation layer
+├── RestaurantReservation.Application/   # Business logic, DTOs, interfaces
+├── RestaurantReservation.Domain/        # Entities, enums, exceptions
+└── RestaurantReservation.Infrastructure/# EF Core, Identity, external services
