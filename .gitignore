@@ -55,8 +55,5 @@ Thumbs.db
 # env files
 .env
 
-# Local appsettings (development secrets)
-appsettings.Development.json
-
 # IIS Express
 .vs/*/applicationhost.config
