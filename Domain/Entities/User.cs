@@ -1,5 +1,6 @@
 namespace RestaurantReservation.Domain.Entities;
 
+using System.ComponentModel.DataAnnotations.Schema;
 using RestaurantReservation.Domain.Enums;
 
 public class User
@@ -10,6 +11,7 @@ public class User
     public string? LastName { get; set; }
     public string PhoneNumber { get; set; } = null!;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    [Column(TypeName = "nvarchar(20)")]
     public UserRole Role { get; set; } = UserRole.Customer;
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();

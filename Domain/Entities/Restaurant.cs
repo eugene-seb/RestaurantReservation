@@ -8,7 +8,8 @@ public class Restaurant
     public TimeSpan OpeningTime { get; set; }
     public TimeSpan ClosingTime { get; set; }
 
-    public virtual Address? RestaurantAddress { get; set; }
+    // Navigation properties
+    public Address RestaurantAddress { get; set; } = null!;
     public virtual ICollection<Table> Tables { get; set; } = new List<Table>();
 
 }

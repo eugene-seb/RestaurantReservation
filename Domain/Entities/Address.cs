@@ -7,4 +7,10 @@ public class Address
     public int ZipCode { get; set; }
     public string City { get; set; } = null!;
     public string Country { get; set; } = null!;
+
+    // Foreign key
+    public int RestaurantId { get; set; }
+
+    // Navigation properties
+    public virtual Restaurant Restaurant { get; set; } = null!;
 }
