@@ -1,0 +1,6 @@
+#- Creates a new migration named "InitialCreate" in the Infrastructure project.
+#- Uses the API project as the startup project for design-time services; -v shows verbose output.
+dotnet ef migrations add InitialCreate --project Infrastructure --startup-project API -v
+
+#- Applies all pending migrations to the database, using the specified startup project to resolve configuration/DI.
+dotnet ef database update --startup-project API

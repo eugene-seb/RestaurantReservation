@@ -5,9 +5,14 @@ using RestaurantReservation.Domain.Enums;
 
 namespace RestaurantReservation.Infrastructure.Data;
 
-public class ApplicationDbContext : IdentityDbContext
+/// <summary>
+/// Entity Framework Core <see cref="DbContext"/> for the application.
+/// Manages access to domain entities (User, Address, Restaurant, Table, Reservation)
+/// and contains fluent configuration (indexes, relationships, seed data).
+/// </summary>
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<IdentityDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<User> UsersTable => Set<User>();
     public DbSet<Address> AddressesTable => Set<Address>();
@@ -222,7 +227,7 @@ public class ApplicationDbContext : IdentityDbContext
                 new Reservation
                 {
                     Id = 1,
-                    ReservationTime = DateTime.UtcNow.AddDays(1),
+                    ReservationTime = new DateTime(2025, 11, 15, 19, 0, 0, DateTimeKind.Utc),
                     NumberOfGuests = 2,
                     Status = ReservationStatus.Confirmed,
                     TableId = 1,
