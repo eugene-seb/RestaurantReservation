@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "80RDB5O1ZEI=",
-  "success": false,
+  "dgSpecHash": "SkbTvmVuJZU=",
+  "success": true,
   "projectFilePath": "C:\\Users\\azerty13\\Documents\\Developpement\\ASP .NET\\RestaurantReservation\\API\\API.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\azerty13\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "C:\\Users\\azerty13\\.nuget\\packages\\automapper\\15.1.0\\automapper.15.1.0.nupkg.sha512",
+    "C:\\Users\\azerty13\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\azerty13\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\azerty13\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.1\\fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
     "C:\\Users\\azerty13\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.11.0\\fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
@@ -61,17 +62,5 @@
     "C:\\Users\\azerty13\\.nuget\\packages\\system.security.permissions\\9.0.0\\system.security.permissions.9.0.0.nupkg.sha512",
     "C:\\Users\\azerty13\\.nuget\\packages\\system.windows.extensions\\9.0.0\\system.windows.extensions.9.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1107",
-      "level": "Error",
-      "message": "Version conflict detected for AutoMapper. Install/reference AutoMapper 15.1.0 directly to project API to resolve this issue. \r\n API -> Application -> AutoMapper (>= 15.1.0) \r\n API -> AutoMapper.Extensions.Microsoft.DependencyInjection 12.0.1 -> AutoMapper (= 12.0.1).",
-      "projectPath": "C:\\Users\\azerty13\\Documents\\Developpement\\ASP .NET\\RestaurantReservation\\API\\API.csproj",
-      "filePath": "C:\\Users\\azerty13\\Documents\\Developpement\\ASP .NET\\RestaurantReservation\\API\\API.csproj",
-      "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }
