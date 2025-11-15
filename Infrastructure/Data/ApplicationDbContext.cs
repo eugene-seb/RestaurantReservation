@@ -41,6 +41,10 @@ public class ApplicationDbContext : DbContext
                 .Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(200);
+            
+            entity
+                .Property(e => e.Password)
+                .IsRequired();
 
             entity
                 .Property(e => e.FirstName)
@@ -72,6 +76,7 @@ public class ApplicationDbContext : DbContext
                 {
                     Id = "user-1",
                     Email = "email@gmal.com",
+                    Password = "Mypassword@1",
                     FirstName = "Eugène",
                     LastName = "ETOUNDI",
                     PhoneNumber = "+1-555-0101",
