@@ -6,6 +6,7 @@ using RestaurantReservation.Domain.Enums;
 public class Reservation
 {
     public int Id { get; set; }
+    public string Name { get; set; } = null!;
     public DateTime ReservationDate { get; set; }
     public int NumberOfGuests { get; set; }
     [Column(TypeName = "nvarchar(20)")]
