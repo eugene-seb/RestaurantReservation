@@ -1,6 +1,44 @@
+##---
+##--- Commmand for migration
+##---
+
 #- Creates a new migration named "InitialCreate" in the Infrastructure project.
 #- Uses the API project as the startup project for design-time services; -v shows verbose output.
 dotnet ef migrations add SchemaUpdate1 --project Infrastructure --startup-project API -v
 
 #- Applies all pending migrations to the database, using the specified startup project to resolve configuration/DI.
 dotnet ef database update --startup-project API
+
+
+
+##---
+##--- Commmand for the creation of the project
+##---
+
+mkdir RestaurantReservation
+cd RestaurantReservation
+
+# Create solution
+dotnet new sln -n RestaurantReservation
+
+# Create projects
+dotnet new webapi -n API
+dotnet new classlib -n Domain
+dotnet new classlib -n Application
+dotnet new classlib -n Infrastructure
+
+# Add projects to solution
+dotnet sln add API/
+dotnet sln add Domain/
+dotnet sln add Application/
+dotnet sln add Infrastructure/
+
+# Add project references
+cd API
+dotnet add reference ../Application/
+
+cd ../Application
+dotnet add reference ../Domain/
+
+cd ../Infrastructure
+dotnet add reference ../Application/
