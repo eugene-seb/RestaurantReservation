@@ -3,6 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using RestaurantReservation.Infrastructure.Data;
+using RestaurantReservation.Application.Interfaces.IRepositories;
+using RestaurantReservation.Infrastructure.Repositories;
+using RestaurantReservation.Application.Interfaces;
 
 namespace RestaurantReservation.Infrastructure;
 
@@ -38,6 +41,14 @@ public static class DependencyInjection
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        // Register repositories and UnitOfWork
+        services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<ITableRepository, TableRepository>();
+        services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
