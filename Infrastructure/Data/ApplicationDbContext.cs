@@ -41,7 +41,7 @@ public class ApplicationDbContext : DbContext
                 .Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(200);
-            
+
             entity
                 .Property(e => e.Password)
                 .IsRequired();
@@ -201,6 +201,10 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id);
 
             entity
+                .Property(e => e.Name)
+                .IsRequired();
+
+            entity
                 .Property(e => e.ReservationTime)
                 .IsRequired();
 
@@ -232,6 +236,7 @@ public class ApplicationDbContext : DbContext
                 new Reservation
                 {
                     Id = 1,
+                    Name = "Eug Reservation",
                     ReservationTime = new DateTime(2025, 11, 15, 19, 0, 0, DateTimeKind.Utc),
                     NumberOfGuests = 2,
                     Status = ReservationStatus.Confirmed,
