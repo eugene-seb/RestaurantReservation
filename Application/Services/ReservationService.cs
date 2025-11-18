@@ -161,9 +161,9 @@ public class ReservationService : IReservationService
     /// <summary>
     /// Cancel a reservation for the given user.
     /// </summary>
-    public async Task CancelReservationAsync(int id, string userId)
+    public async Task CancelReservationAsync(int reservationId, string userId)
     {
-        var reservation = await _reservationRepository.GetByIdAsync(id);
+        var reservation = await _reservationRepository.GetByIdAsync(reservationId);
         if (reservation == null || reservation.UserId != userId)
             throw new ArgumentException("Reservation not found");
 
@@ -172,7 +172,7 @@ public class ReservationService : IReservationService
 
         reservation.Cancel();
         await _reservationRepository.UpdateAsync(reservation);
-        _logger.LogInformation("Reservation {ReservationId} cancelled by user {UserId}", id, userId);
+        _logger.LogInformation("Reservation {ReservationId} cancelled by user {UserId}", reservationId, userId);
     }
 
     /// <summary>
