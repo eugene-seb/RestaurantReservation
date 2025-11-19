@@ -10,7 +10,7 @@ namespace RestaurantReservation.Infrastructure.Repositories;
 /// Repository implementation for <see cref="UserAccount"/> entities.
 /// Responsible for user persistence and basic queries.
 /// </summary>
-public class UserAccountRepository : IUserRepository
+public class UserAccountRepository: IUserAccountRepository
 {
     /// <summary>
     /// EF Core database context used for user operations.
