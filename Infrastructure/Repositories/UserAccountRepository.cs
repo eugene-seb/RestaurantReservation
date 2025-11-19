@@ -7,10 +7,10 @@ using RestaurantReservation.Infrastructure.Data;
 namespace RestaurantReservation.Infrastructure.Repositories;
 
 /// <summary>
-/// Repository implementation for <see cref="User"/> entities.
+/// Repository implementation for <see cref="UserAccount"/> entities.
 /// Responsible for user persistence and basic queries.
 /// </summary>
-public class UserRepository : IUserRepository
+public class UserAccountRepository : IUserRepository
 {
     /// <summary>
     /// EF Core database context used for user operations.
@@ -20,14 +20,14 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Logger used to record repository diagnostics and errors.
     /// </summary>
-    private readonly ILogger<UserRepository> _logger;
+    private readonly ILogger<UserAccountRepository> _logger;
 
     /// <summary>
-    /// Construct a new <see cref="UserRepository"/> instance.
+    /// Construct a new <see cref="UserAccountRepository"/> instance.
     /// </summary>
     /// <param name="context">Application database context.</param>
     /// <param name="logger">Logger for this repository.</param>
-    public UserRepository(ApplicationDbContext context, ILogger<UserRepository> logger)
+    public UserAccountRepository(ApplicationDbContext context, ILogger<UserAccountRepository> logger)
     {
         _context = context;
         _logger = logger;
@@ -36,25 +36,25 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Retrieve a user by identifier.
     /// </summary>
-    public async Task<User?> GetByIdAsync(string id)
+    public async Task<UserAccount?> GetByIdAsync(string id)
         => await _context.UsersTable.FindAsync(id);
 
     /// <summary>
     /// Retrieve all users.
     /// </summary>
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<UserAccount>> GetAllAsync()
         => await _context.UsersTable.ToListAsync();
 
     /// <summary>
     /// Retrieve a user by email address.
     /// </summary>
-    public async Task<User?> GetByEmailAsync(string email)
+    public async Task<UserAccount?> GetByEmailAsync(string email)
         => await _context.UsersTable.FirstOrDefaultAsync(u => u.Email == email);
 
     /// <summary>
     /// Add a new user to the database.
     /// </summary>
-    public async Task<User> AddAsync(User user)
+    public async Task<UserAccount> AddAsync(UserAccount user)
     {
         try
         {
@@ -72,7 +72,7 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Update an existing user.
     /// </summary>
-    public async Task UpdateAsync(User user)
+    public async Task UpdateAsync(UserAccount user)
     {
         try
         {
@@ -81,7 +81,7 @@ public class UserRepository : IUserRepository
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to update user {UserId}", user.Id);
+            _logger.LogError(ex, "Failed to update user {UserId}", user.UserId);
             throw;
         }
     }

@@ -14,7 +14,7 @@ public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-    public DbSet<User> UsersTable => Set<User>();
+    public DbSet<UserAccount> UsersTable => Set<UserAccount>();
     public DbSet<Address> AddressesTable => Set<Address>();
     public DbSet<Restaurant> RestaurantsTable => Set<Restaurant>();
     public DbSet<Table> TablesTable => Set<Table>();
@@ -33,9 +33,9 @@ public class ApplicationDbContext : DbContext
 
     private static void ConfigureUsers(ModelBuilder builder)
     {
-        builder.Entity<User>(entity =>
+        builder.Entity<UserAccount>(entity =>
         {
-            entity.HasKey(e => e.Id);
+            entity.HasKey(e => e.UserId);
 
             entity
                 .Property(e => e.Email)
@@ -72,9 +72,9 @@ public class ApplicationDbContext : DbContext
             entity.HasIndex(e => new { e.FirstName, e.LastName });
 
             entity.HasData(
-                new User
+                new UserAccount
                 {
-                    Id = "user-1",
+                    UserId = "user-1",
                     Email = "email@gmal.com",
                     Password = "Mypassword@1",
                     FirstName = "Eugène",

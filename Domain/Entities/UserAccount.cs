@@ -6,10 +6,10 @@ using RestaurantReservation.Domain.Enums;
 /// <summary>
 /// Domain entity representing an application user.
 /// </summary>
-public class User
+public class UserAccount
 {
     /// <summary>Unique identifier for the user (typically Identity user id).</summary>
-    public string Id { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     /// <summary>User email address.</summary>
     public string Email { get; set; } = null!;

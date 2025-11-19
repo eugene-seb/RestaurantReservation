@@ -37,7 +37,7 @@ public class Reservation
     public int TableId { get; set; }
 
     /// <summary>Navigation property to the user who made the reservation.</summary>
-    public virtual User User { get; set; } = null!;
+    public virtual UserAccount User { get; set; } = null!;
 
     /// <summary>Navigation property to the assigned table.</summary>
     public virtual Table Table { get; set; } = null!;

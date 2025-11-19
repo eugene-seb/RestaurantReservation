@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using RestaurantReservation.Domain.Enums;
 
 namespace RestaurantReservation.Application.DTOs;
 
@@ -48,10 +49,35 @@ public class UserLoginDto
 }
 
 /// <summary>
-/// DTO representing a user's public profile information.
+/// DTO used to change an authenticated user's password.
 /// </summary>
-public class UserProfileDto
+public class UserChangePasswordDto
 {
+    /// <summary>Current password (required).</summary>
+    [Required]
+    public string CurrentPassword { get; set; } = string.Empty;
+
+    /// <summary>New password (required). Minimum length enforced.</summary>
+    [Required]
+    [StringLength(100, MinimumLength = 8)]
+    public string NewPassword { get; set; } = string.Empty;
+}
+
+
+/// <summary>
+/// DTO representing an authenticated user.
+/// </summary>
+public class UserAuthenticatedDto
+{
+    /// <summary>JWT access token issued to the authenticated user.</summary>
+    public string Token { get; set; } = string.Empty;
+
+    /// <summary>UTC timestamp when the token expires.</summary>
+    public DateTime Expiration { get; set; }
+
+    /// <summary>User's Id in DB.</summary>
+    public string UserId { get; set; } = string.Empty;
+
     /// <summary>User email address.</summary>
     public string Email { get; set; } = string.Empty;
 
@@ -63,4 +89,7 @@ public class UserProfileDto
 
     /// <summary>User phone number.</summary>
     public string PhoneNumber { get; set; } = string.Empty;
+
+    /// <summary>user's role</summary>
+    public string Role { get; set; } = string.Empty;
 }
