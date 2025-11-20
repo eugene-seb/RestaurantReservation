@@ -3,18 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 using RestaurantReservation.Application.DTOs;
 using RestaurantReservation.Application.Interfaces.IServices;
 using System.Security.Claims;
+
 namespace RestaurantReservation.API.Controllers;
 
 /// <summary>
-/// Controller that handles authentication endpoints: registration, login and password management.
+/// Controller that handles authentication endpoints: registration, login, and password management.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
+    /// <summary>
+    /// Service for authentication and user management.
+    /// </summary>
     private readonly IAuthService _authService;
+
+    /// <summary>
+    /// Logger for authentication events.
+    /// </summary>
     private readonly ILogger<AuthController> _logger;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthController"/> class.
+    /// </summary>
     public AuthController(IAuthService authService, ILogger<AuthController> logger)
     {
         _authService = authService;
@@ -22,21 +33,25 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Register a new user.
+    /// Registers a new user.
     /// </summary>
     /// <param name="registerDto">Registration data.</param>
+    /// <returns>200 OK if successful, 400 Bad Request otherwise.</returns>
     [HttpPost("register")]
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(UserRegistrationDto registerDto)
     {
+        // Call the authentication service to register the user
         var result = await _authService.RegisterAsync(registerDto);
 
-        if (result.Succeeded)
+        // If registration succeeded, return success message
+        if (!string.IsNullOrWhiteSpace(result.UserId))
             return Ok(new { message = "User registered successfully" });
 
-        return BadRequest(new { errors = result.Errors.Select(e => e.Description) });
+        // Otherwise, return error message
+        return BadRequest(new { error = "User registration failed" });
     }
 
     /// <summary>
