@@ -46,12 +46,6 @@ public class UserAccountRepository: IUserAccountRepository
         => await _context.UsersTable.ToListAsync();
 
     /// <summary>
-    /// Retrieve a user by email address.
-    /// </summary>
-    public async Task<UserAccount?> GetByEmailAsync(string email)
-        => await _context.UsersTable.FirstOrDefaultAsync(u => u.Email == email);
-
-    /// <summary>
     /// Add a new user to the database.
     /// </summary>
     public async Task<UserAccount> AddAsync(UserAccount user)

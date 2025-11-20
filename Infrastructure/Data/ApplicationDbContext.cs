@@ -38,15 +38,6 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(e => e.UserId);
 
             entity
-                .Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(200);
-
-            entity
-                .Property(e => e.Password)
-                .IsRequired();
-
-            entity
                 .Property(e => e.FirstName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -57,16 +48,7 @@ public class ApplicationDbContext : DbContext
                 .HasMaxLength(100);
 
             entity
-                .Property(e => e.PhoneNumber)
-                .IsRequired()
-                .HasMaxLength(20);
-
-            entity
                 .Property(e => e.CreatedAt)
-                .IsRequired();
-
-            entity
-                .Property(e => e.Role)
                 .IsRequired();
 
             entity.HasIndex(e => new { e.FirstName, e.LastName });
@@ -75,13 +57,9 @@ public class ApplicationDbContext : DbContext
                 new UserAccount
                 {
                     UserId = "user-1",
-                    Email = "email@gmal.com",
-                    Password = "Mypassword@1",
                     FirstName = "Eugène",
                     LastName = "ETOUNDI",
-                    PhoneNumber = "+1-555-0101",
                     CreatedAt = new DateTime(2023, 1, 1),
-                    Role = UserRole.Customer
                 }
             );
         });
