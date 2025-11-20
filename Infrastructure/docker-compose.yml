@@ -12,10 +12,3 @@ services:
 
 volumes:
   sqlserver_data:
-
-
-
-
-  dotnet ef migrations add InitialCreate --startup-project ../API
-
-dotnet ef database update --startup-project ../API
