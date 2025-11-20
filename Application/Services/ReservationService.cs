@@ -79,15 +79,15 @@ public class ReservationService : IReservationService
         {
             var restaurant = await _restaurantRepository.GetByIdAsync(reservationDto.RestaurantId);
             if (restaurant == null)
-                throw new ArgumentException("Restaurant not found");
+                throw new Domain.Exceptions.RestaurantNotFoundException("Restaurant not found");
 
             var timeOfDay = reservationDto.ReservationDate.TimeOfDay;
             if (timeOfDay < restaurant.OpeningTime || timeOfDay > restaurant.ClosingTime)
-                throw new InvalidOperationException("Restaurant is closed at the requested time");
+                throw new Domain.Exceptions.InvalidReservationStatusException("Restaurant is closed at the requested time");
 
             var availableTable = await FindAvailableTableAsync(reservationDto);
             if (availableTable == null)
-                throw new InvalidOperationException("No available tables for the requested time and party size");
+                throw new Domain.Exceptions.TableNotAvailableException("No available tables for the requested time and party size");
 
             var reservation = new Reservation
             {
@@ -165,10 +165,10 @@ public class ReservationService : IReservationService
     {
         var reservation = await _reservationRepository.GetByIdAsync(reservationId);
         if (reservation == null || reservation.UserId != userId)
-            throw new ArgumentException("Reservation not found");
+            throw new Domain.Exceptions.ReservationConflictException("Reservation not found or does not belong to user");
 
         if (!reservation.CanBeModified())
-            throw new InvalidOperationException("Cannot cancel this reservation");
+            throw new Domain.Exceptions.InvalidReservationStatusException("Cannot cancel this reservation");
 
         reservation.Cancel();
         await _reservationRepository.UpdateAsync(reservation);

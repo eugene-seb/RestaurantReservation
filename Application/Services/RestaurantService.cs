@@ -104,7 +104,7 @@ public class RestaurantService : IRestaurantService
     {
         var existing = await _repository.GetByIdAsync(restaurantId);
         if (existing == null)
-            throw new ArgumentException("Restaurant not found");
+            throw new Domain.Exceptions.RestaurantNotFoundException("Restaurant not found");
 
         _mapper.Map(restaurantDto, existing);
 
