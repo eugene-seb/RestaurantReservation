@@ -46,7 +46,7 @@ public class Reservation
     public void Cancel()
     {
         if (Status == ReservationStatus.Seated)
-            throw new InvalidOperationException("Cannot cancel a seated reservation");
+            throw new Exceptions.InvalidReservationStatusException("Cannot cancel a seated reservation");
 
         Status = ReservationStatus.Cancelled;
     }
