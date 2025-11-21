@@ -1,53 +1,114 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using FluentValidation.AspNetCore;
 using RestaurantReservation.Infrastructure;
+using RestaurantReservation.Application.Interfaces;
+using RestaurantReservation.Application.Services;
+using RestaurantReservation.Application.Validators;
+using RestaurantReservation.Application.Interfaces.IServices;
+using RestaurantReservation.API.Middleware;
+using Microsoft.OpenApi;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
-Register infrastructure services (DbContext, Identity stores, repositories, etc.).
-Keep this before other service registrations so the application's DI container
-has the ApplicationDbContext and related services available for downstream setup
-(e.g. Identity, repositories, and EF migrations).
-*/
+// Infrastructure
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// Controllers & Validation
+builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAddressDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAddressDtoValidatorNullable>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateAddressDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateRestaurantDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateRestaurantDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTableDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateTableDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateReservationDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterDtoValidator>();
 
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc(
+        "v1",
+        new OpenApiInfo { Title = "Restaurant Reservation API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    /** The reference in OpenApiSecurityScheme has been remove 
+        since .Net10 so I need to wait for the update at the alternative to reference
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+    */
+});
+
+// JWT Auth
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]
+            ?? throw new InvalidOperationException("JWT Key not configured")))
+    };
+});
+
+builder.Services.AddAuthorization();
+
+// Application Services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
